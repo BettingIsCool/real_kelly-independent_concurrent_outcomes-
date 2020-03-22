@@ -46,6 +46,7 @@ def optimize(selections: list, bankroll: float, max_multiple: int):
             bets.append(bet)
             book_odds.append(prod)
 
+    # CACHE WINNING BETS
     winning_bets = defaultdict(list)
     for index_combination, combination in enumerate(combinations):
         for index_bet, bet in enumerate(bets):
@@ -63,7 +64,6 @@ def optimize(selections: list, bankroll: float, max_multiple: int):
                 end_bankrolls[index_combination] += stakes[index_bet] * book_odds[index_bet]
 
         # RETURN THE OBJECTIVE AS A SUMPRODUCT OF PROBABILITIES AND END_BANKROLLS - THIS IS THE FUNCTION TO BE MAXIMIZED
-        # SEE https://www.pinnacle.com/en/betting-articles/Betting-Strategy/the-real-kelly-criterion/HZKJTFCB3KNYN9CJ
         return -sum([p * e for p, e in zip(probs, np.log(end_bankrolls))])
 
     def constraint(stakes):
